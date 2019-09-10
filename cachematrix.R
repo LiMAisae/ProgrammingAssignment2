@@ -1,14 +1,14 @@
 ## This 2 functions below allow to create a special matrix and 
-## cache its inversion. If the inversion computing is recalled
-## repeatedly, the cached inversion is automatically outputed.
+## cache its inverse. If the inverse computing is recalled
+## repeatedly, the cached inverse is automatically outputed.
 
 ## The first function, `makeCacheMatrix` creates a special "matrix",
 ## which is really a list containing a function to
 
 ##1.  set the value of the matrix
 ##2.  get the value of the matrix
-##3.  set the value of the inversion
-##4.  get the value of the inversion
+##3.  set the value of the inverse
+##4.  get the value of the inverse
 
 makeCacheMatrix <- function(x = matrix()) {
   inv<-NULL
@@ -17,30 +17,30 @@ makeCacheMatrix <- function(x = matrix()) {
     inv<<-NULL
   }
   get<-function() x
-  setinversion<-function(inversion) inv<<-inversion
-  getinversion<-function() inv
+  setinverse<-function(inverse) inv<<-inverse
+  getinverse<-function() inv
   list(set=set, get=get, 
-       getinversion=getinversion,
-       setinversion=setinversion)
+       getinverse=getinverse,
+       setinverse=setinverse)
 }
 
 
-## The following function calculates the inversion of the special "matrix"
+## The following function calculates the inverse of the special "matrix"
 ## created with the above function. However, it first checks to see 
-## if the inversion has already been calculated. If so, it `get`s the inversion
+## if the inverse has already been calculated. If so, it `get`s the inverse
 ## from the cache and skips the computation. Otherwise, it calculates 
-## the inversion of the data and sets the value of the inversion in the cache 
-## via the `setinversion` function.
+## the inverse of the data and sets the value of the inverse in the cache 
+## via the `setinverse` function.
 
 cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x'
-  inv<-x$getinversion()
+  inv<-x$getinverse()
   if(!is.null(inv)){
     message("getting cached data")
     return(inv)
   }
   data<-x$get()
   inv<-solve(data,...)
-  x$setinversion(inv)
+  x$setinverse(inv)
   inv
 }
